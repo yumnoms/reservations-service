@@ -9,9 +9,10 @@
   },
   "scripts": {
     "build": "webpack -d --watch ",
+    "lint": "eslint '**/*.{js,jsx}'",
+    "seed": "node server/seedDatabase.js",
     "start": "nodemon server/server.js",
-    "test": "jest",
-    "lint": "eslint '**/*.{js,jsx}'"
+    "test": "jest"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

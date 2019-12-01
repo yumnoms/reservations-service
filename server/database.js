@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const seed = require('./seedDatabase.js');
 
 
 const sequelize = new Sequelize('YumNoms', 'student', 'student', {
@@ -30,24 +29,20 @@ Table.belongsTo(Restaurant);
 Restaurant.hasMany(Table, { as: 'Offerings' });
 
 
-module.exports.initialize = () => {
-  sequelize.authenticate()
-    .then(() => {
-      console.log('Connection has been established successfully.');
-      return sequelize.sync({ force: true });
-    })
-    .then(() => {
-      console.log('Database tables synced!');
-      return seed.restaurants(Restaurant);
-    })
-    .then(() => {
-      console.log('Successfully seeded Restaurants!');
-      return seed.tables(Table, Restaurant);
-    })
-    .then(() => {
-      console.log('Successfully seeded Tables!');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+module.exports = {
+  Table,
+  Restaurant,
+  initialize: () => {
+    sequelize.authenticate()
+      .then(() => {
+        console.log('Connection has been established successfully.');
+        return sequelize.sync({ force: true });
+      })
+      .then(() => {
+        console.log('Database tables synced!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };

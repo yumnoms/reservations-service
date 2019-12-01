@@ -1,12 +1,13 @@
 // const Sequelize = require('sequelize');
 const faker = require('faker');
+const db = require('./database.js');
 
 
 const numberOfRestaurants = 10;
-const numberOfTables = 100;
+const numberOfTables = 1000;
 
 
-module.exports.restaurants = (Restaurant) => {
+const seedRestaurants = () => {
   const promises = [];
 
   for (let i = 0; i < numberOfRestaurants; i += 1) {
@@ -18,19 +19,19 @@ module.exports.restaurants = (Restaurant) => {
       close: `${faker.random.number({ min: 20, max: 23 })}:${faker.random.arrayElement(['00', '30'])}:00`,
     };
 
-    promises.push(Restaurant.create(newEntry));
+    promises.push(db.Restaurant.create(newEntry));
   }
 
   return Promise.all(promises);
 };
 
-module.exports.tables = (Table, Restaurant) => {
+const seedTables = () => {
   const promises = [];
 
   for (let i = 0; i < numberOfTables; i += 1) {
     const restaurantId = faker.random.number({ min: 1, max: numberOfRestaurants });
 
-    Restaurant.findOne({ where: { id: restaurantId } })
+    db.Restaurant.findOne({ where: { id: restaurantId } })
       .then((restaurant) => {
         const info = restaurant.dataValues;
         const tableSize = 2 * faker.random.number({ min: 1, max: (info.max_party / 2) });
@@ -49,9 +50,22 @@ module.exports.tables = (Table, Restaurant) => {
           is_open: faker.random.boolean(),
         };
 
-        promises.push(Table.create(newEntry));
+        promises.push(db.Table.create(newEntry));
       });
   }
 
   return Promise.all(promises);
 };
+
+
+seedRestaurants()
+  .then(() => {
+    console.log('Successfully seeded Restaurants!');
+    return seedTables();
+  })
+  .then(() => {
+    console.log('Successfully seeded Tables!');
+  })
+  .catch((err) => {
+    console.log('ERROR:', err);
+  });

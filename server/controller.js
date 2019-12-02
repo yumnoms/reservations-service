@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const model = require('./model.js');
 
 
@@ -32,9 +33,16 @@ module.exports = {
       });
   },
 
-  // getTables: (restaurantId, searchParameters) => {
+  getTables: (restaurantId, searchParameters) => {
+    const query = {
+      date: searchParameters.date,
+      time: searchParameters.time,
+      min_seating: { [Sequelize.Op.lte]: searchParameters.people },
+      max_seating: { [Sequelize.Op.gte]: searchParameters.people },
+    };
 
-  // },
+    return Promise.all(model.getTables(restaurantId, query));
+  },
 
   // makeReservations: (restaurantId, tableId) => {
 

@@ -64,7 +64,22 @@ module.exports = {
       });
   },
 
-  // makeReservations: (restaurantId, tableId) => {
+  makeReservations: (restaurantId, tableId) => {
+    const query = {
+      id: tableId,
+      restaurant_id: restaurantId,
+    };
 
-  // },
+    return Promise.all(model.makeReservations(query))
+      .then((dbTableInstance) => {
+        const table = {
+          id: dbTableInstance.dataValues.id,
+          date: dbTableInstance.dataValues.date,
+          time: dbTableInstance.dataValues.time,
+          isOpen: dbTableInstance.dataValues.is_open,
+        };
+
+        return table;
+      });
+  },
 };

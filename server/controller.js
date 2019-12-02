@@ -41,7 +41,23 @@ module.exports = {
       max_seating: { [Sequelize.Op.gte]: searchParameters.people },
     };
 
-    return Promise.all(model.getTables(restaurantId, query));
+    return Promise.all(model.getTables(restaurantId, query))
+      .then((dbTablesInstances) => {
+        const tables = [];
+
+        Array.from(dbTablesInstances).forEach((dbTableInstance) => {
+          const table = {
+            id: dbTableInstance.dataValues.id,
+            date: dbTableInstance.dataValues.date,
+            time: dbTableInstance.dataValues.time,
+            isOpen: dbTableInstance.dataValues.is_open,
+          };
+
+          tables.push(table);
+        });
+
+        return tables;
+      });
   },
 
   // makeReservations: (restaurantId, tableId) => {

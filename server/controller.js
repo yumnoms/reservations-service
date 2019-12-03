@@ -42,11 +42,8 @@ module.exports = {
       restaurant_id: restaurantId,
     };
 
-    return Promise.all(model.makeReservation(query))
-      .then(() => module.exports.getTables(restaurantId, { id: tableId }))
+    return model.makeReservation(query)
       .then((dbTableInstance) => {
-        console.log(dbTableInstance);
-
         const table = {
           id: dbTableInstance.dataValues.id,
           date: dbTableInstance.dataValues.date,

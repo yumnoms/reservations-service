@@ -34,14 +34,18 @@ module.exports = {
   },
 
   getTables: (restaurantId, searchParameters) => {
+    const searchHour = searchParameters.time.split(':')[0];
+    const lowerTimeBound = `${Number(searchHour) - 2}:00:00`;
+    const upperTimeBound = `${Number(searchHour) + 2}:00:00`;
+
     const query = {
       date: searchParameters.date,
-      time: searchParameters.time,
+      time: { [Sequelize.Op.between]: [lowerTimeBound, upperTimeBound] },
       min_seating: { [Sequelize.Op.lte]: searchParameters.people },
       max_seating: { [Sequelize.Op.gte]: searchParameters.people },
     };
 
-    return Promise.all(model.getTables(restaurantId, query))
+    return model.getTables(restaurantId, query)
       .then((dbTablesInstances) => {
         const tables = [];
 

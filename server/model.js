@@ -12,6 +12,6 @@ module.exports = {
   },
 
   makeReservation: (query) => db.Table.findOne({ where: query })
-    .then((table) => table.update({ is_open: false }))
+    .then((tableInstance) => tableInstance.update({ is_open: false }))
   ,
 };

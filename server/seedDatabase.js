@@ -2,8 +2,8 @@ const faker = require('faker');
 const db = require('./database.js');
 
 
-const numberOfRestaurants = 10;
-const numberOfTables = 1000;
+const numberOfRestaurants = process.env.TEST ? 1 : 100;
+const numberOfTables = process.env.TEST ? 10 : 100000;
 
 
 const seedRestaurants = () => {
@@ -43,7 +43,7 @@ const seedTables = () => {
 
           const newEntry = {
             restaurant_id: restaurant.dataValues.id,
-            date: faker.date.recent(-7),
+            date: faker.date.recent(-100),
             time: startTime,
             min_seating: tableSize - 1,
             max_seating: tableSize,
@@ -59,14 +59,16 @@ const seedTables = () => {
 };
 
 
-seedRestaurants()
-  .then(() => {
-    console.log('Successfully seeded Restaurants!');
-    return seedTables();
-  })
-  .then(() => {
-    console.log('Successfully seeded Tables!');
-  })
-  .catch((err) => {
-    console.log('ERROR:', err);
-  });
+module.exports = (() => (
+  seedRestaurants()
+    .then(() => {
+      console.log('Successfully seeded Restaurants!');
+      return seedTables();
+    })
+    .then(() => {
+      console.log('Successfully seeded Tables!');
+    })
+    .catch((err) => {
+      console.log('ERROR:', err);
+    })
+))();

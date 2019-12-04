@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 
 
-const sequelize = new Sequelize('YumNoms', 'student', 'student', {
+const database = process.env.TEST ? 'YumNoms_TEST' : 'YumNoms';
+const sequelize = new Sequelize(database, 'student', 'student', {
   dialect: 'mysql',
   port: 3306,
 });
@@ -30,19 +31,20 @@ Restaurant.hasMany(Table, { as: 'Offerings' });
 
 
 module.exports = {
+  sequelize,
   Table,
   Restaurant,
-  initialize: () => {
+  initialize: () => (
     sequelize.authenticate()
       .then(() => {
         console.log('Connection has been established successfully.');
-        return sequelize.sync({ force: true });
+        return sequelize.sync({ force: !!process.env.TEST });
       })
       .then(() => {
         console.log('Database tables synced!');
       })
       .catch((err) => {
         console.log(err);
-      });
-  },
+      })
+  ),
 };

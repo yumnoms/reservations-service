@@ -11,8 +11,9 @@
     "build": "webpack -d --watch ",
     "lint": "eslint '**/*.{js,jsx}'",
     "seed": "node server/seedDatabase.js",
-    "start": "nodemon server/server.js",
-    "test": "jest"
+    "start": "node server/start.js",
+    "start-dev": "nodemon server/start.js",
+    "test": "TEST=true jest --silent --coverage"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -23,7 +24,9 @@
     "nodemon": "^2.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "request": "^2.88.0",
     "sequelize": "^5.21.2",
+    "supertest": "^4.0.2",
     "webpack-cli": "^3.3.10"
   },
   "devDependencies": {

@@ -3,7 +3,7 @@ const db = require('./database.js');
 
 
 const numberOfRestaurants = process.env.TEST ? 1 : 100;
-const numberOfTables = process.env.TEST ? 10 : 100000;
+const numberOfTables = process.env.TEST ? 100 : 100000;
 
 
 const seedRestaurants = () => {
@@ -43,11 +43,11 @@ const seedTables = () => {
 
           const newEntry = {
             restaurant_id: restaurant.dataValues.id,
-            date: faker.date.recent(-100),
+            date: faker.date.recent(process.env.TEST ? -1 : -100),
             time: startTime,
             min_seating: tableSize - 1,
             max_seating: tableSize,
-            is_open: faker.random.boolean(),
+            is_open: process.env.TEST ? true : faker.random.boolean(),
           };
 
           return db.Table.create(newEntry);

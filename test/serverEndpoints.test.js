@@ -32,3 +32,41 @@ describe('GET /api/:id', () => {
     expect(res.statusCode).toBe(500);
   });
 });
+
+
+describe('GET /api/:id/search', () => {
+  test('successfully respond with array of table objects for a valid restaurant id', async () => {
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    today = `${yyyy}-${mm}-${dd}`;
+
+    const queryParams = `?date=${today}&time=12:00:00&people=4`;
+    const res = await request.get(`/api/1/search${queryParams}`);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body[0]).toHaveProperty('id');
+    expect(res.body[0]).toHaveProperty('date');
+    expect(res.body[0]).toHaveProperty('time');
+    expect(res.body[0]).toHaveProperty('isOpen');
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  test('successfully respond with empty array for a day with no tables', async () => {
+    const badDate = '1900-01-01';
+    const queryParams = `?date=${badDate}&time=12:00:00&people=4`;
+    const res = await request.get(`/api/1/search${queryParams}`);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBe(0);
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  test('respond with an error code 500 for an invalid restaurant id', async () => {
+    const res = await request.get('/api/0/search');
+    expect(res.statusCode).toBe(500);
+  });
+});

@@ -70,3 +70,32 @@ describe('GET /api/:id/search', () => {
     expect(res.statusCode).toBe(500);
   });
 });
+
+
+describe('POST /api/:id/reservation', () => {
+  test('successfully respond with the table object for a valid restaurant id and table', async () => {
+    const res = await request.post('/api/1/reservation')
+      .send({ table: 1 });
+
+    expect(res.body).toHaveProperty('id');
+    expect(res.body).toHaveProperty('date');
+    expect(res.body).toHaveProperty('time');
+    expect(res.body).toHaveProperty('isOpen');
+
+    expect(res.body.isOpen).toBe(false);
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  test('respond with an error code 500 for an invalid restaurant id', async () => {
+    const res = await request.post('/api/0/reservation');
+    expect(res.statusCode).toBe(500);
+  });
+
+  test('respond with an error code 500 for an invalid table id', async () => {
+    const res = await request.post('/api/1/reservation')
+      .send({ table: 0 });
+
+    expect(res.statusCode).toBe(500);
+  });
+});

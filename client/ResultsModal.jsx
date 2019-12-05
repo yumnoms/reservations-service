@@ -2,8 +2,9 @@ import React from 'react';
 import DateSelection from './DateSelection.jsx';
 import TimeSelection from './TimeSelection.jsx';
 import PeopleSelection from './PeopleSelection.jsx';
+import ResultsList from './ResultsList.jsx';
 
-class App extends React.Component {
+class Results extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,12 +14,13 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <p>Make a Reservation</p>
+        <p>Restauant Name</p>
         <form>
-          <div><DateSelection /></div>
+          <DateSelection />
           <TimeSelection />
           <PeopleSelection />
-          <p><button type="submit">Find a Table</button></p>
+          <button type="submit">Find a Table</button>
+          <ResultsList />
         </form>
       </div>
     );
@@ -26,4 +28,4 @@ class App extends React.Component {
 }
 
 
-export default App;
+export default Results;

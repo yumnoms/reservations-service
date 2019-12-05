@@ -46,10 +46,13 @@ describe('GET /api/:id/search', () => {
     const res = await request.get(`/api/1/search${queryParams}`);
 
     expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body[0]).toHaveProperty('id');
-    expect(res.body[0]).toHaveProperty('date');
-    expect(res.body[0]).toHaveProperty('time');
-    expect(res.body[0]).toHaveProperty('isOpen');
+
+    if (res.body.length) {
+      expect(res.body[0]).toHaveProperty('id');
+      expect(res.body[0]).toHaveProperty('date');
+      expect(res.body[0]).toHaveProperty('time');
+      expect(res.body[0]).toHaveProperty('isOpen');
+    }
 
     expect(res.statusCode).toBe(200);
   });

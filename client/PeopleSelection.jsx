@@ -1,22 +1,21 @@
 import React from 'react';
 
 class PeopleSelection extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
+  createSelections() {
+    const { min, max } = this.props;
+    const children = [];
+    for (let i = min; i <= max; i += 1) {
+      if (i === 1) children.push(<option value={i}>{i} person</option>);
+      else children.push(<option value={i}>{i} people</option>);
+    }
+    return children;
   }
 
   render() {
     return (
       <span>
         <select name="people" id="PeopleSelect">
-          <option value="1">1 person</option>
-          <option value="2">2 people</option>
-          <option value="3">3 people</option>
-          <option value="4">4 people</option>
-          <option value="5">5 people</option>
-          <option value="6">6 people</option>
+          {this.createSelections()}
         </select>
       </span>
     );

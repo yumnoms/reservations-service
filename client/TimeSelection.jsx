@@ -1,24 +1,33 @@
 import React from 'react';
 
 class TimeSelection extends React.Component {
-  constructor(props) {
-    super(props);
+  createSelections() {
+    const { open, close } = this.props;
+    const children = [];
 
-    this.state = {};
+    let timeValue = open;
+    while (timeValue !== close) {
+      const hh = timeValue.split(':')[0];
+      const mm = timeValue.split(':')[1];
+      let timeDisplay = `${hh}:${mm}`;
+
+      if (timeValue < '12:00:00') children.push(<option value={timeValue}>{timeDisplay} am</option>);
+      else {
+        if (timeValue >= '13:00:00') timeDisplay = `${Number(hh) - 12}:${mm}`;
+        children.push(<option value={timeValue}>{timeDisplay} pm</option>);
+      }
+
+      if (mm === '45') timeValue = `${Number(hh) + 1}:00:00`;
+      else timeValue = `${hh}:${Number(mm) + 15}:00`;
+    }
+    return children;
   }
 
   render() {
     return (
       <span>
         <select name="time" id="TimeSelect">
-          <option value="09:00:00">9:00 am</option>
-          <option value="10:00:00">10:00 am</option>
-          <option value="11:00:00">11:00 am</option>
-          <option value="12:00:00">12:00 pm</option>
-          <option value="13:00:00">1:00 pm</option>
-          <option value="14:00:00">2:00 pm</option>
-          <option value="15:00:00">3:00 pm</option>
-          <option value="16:00:00">4:00 pm</option>
+          {this.createSelections()}
         </select>
       </span>
     );

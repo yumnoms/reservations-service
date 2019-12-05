@@ -7,7 +7,7 @@ const controller = require('./controller.js');
 const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ urlencoded: true }));
-server.use(express.static(path.join(__dirname, '../public')));
+server.use('/:id', express.static(path.join(__dirname, '../public')));
 
 
 server.get('/api/:id', (req, res) => {

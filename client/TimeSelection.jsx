@@ -17,8 +17,8 @@ class TimeSelection extends React.Component {
         children.push(<option value={timeValue}>{timeDisplay} pm</option>);
       }
 
-      if (mm === '45') timeValue = `${Number(hh) + 1}:00:00`;
-      else timeValue = `${hh}:${Number(mm) + 15}:00`;
+      if (mm === '30') timeValue = `${Number(hh) + 1}:00:00`;
+      else timeValue = `${hh}:${Number(mm) + 30}:00`;
     }
     return children;
   }

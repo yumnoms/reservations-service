@@ -4,6 +4,7 @@ import DateSelection from './DateSelection.jsx';
 import TimeSelection from './TimeSelection.jsx';
 import PeopleSelection from './PeopleSelection.jsx';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +22,6 @@ class App extends React.Component {
       url: `/api${restaurantId}`,
       method: 'GET',
       success: (response) => {
-        console.log(response);
         this.setState({
           restaurantInfo: response,
         });
@@ -47,7 +47,7 @@ class App extends React.Component {
           <div><DateSelection dates={dates} /></div>
           <TimeSelection open={open} close={close} />
           <PeopleSelection min={min} max={max} />
-          <p><button type="submit">Find a Table</button></p>
+          <p><button type="button">Find a Table</button></p>
         </form>
       </div>
     );

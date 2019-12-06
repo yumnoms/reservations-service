@@ -7,36 +7,114 @@ class Calendar extends React.Component {
     super(props);
 
     this.state = {
-      dateObject: moment(),
+      selectedMonth: moment(),
     };
+
+    this.onDayClick = this.onDayClick.bind(this);
+    this.onPreviousClick = this.onPreviousClick.bind(this);
+    this.onNextClick = this.onNextClick.bind(this);
   }
 
+  componentDidMount() {
+    const { selectedDate } = this.props;
+    this.setState({
+      selectedMonth: selectedDate,
+    });
+  }
+
+  onDayClick(dateValue) {
+    const { changeSelectedDate } = this.props;
+    changeSelectedDate(moment(dateValue));
+    this.setState({
+      selectedMonth: moment(dateValue),
+    });
+  }
+
+  onPreviousClick() {
+    const { selectedMonth } = this.state;
+    this.setState({
+      selectedMonth: moment(selectedMonth).month(selectedMonth.month() - 1),
+    });
+  }
+
+  onNextClick() {
+    const { selectedMonth } = this.state;
+    this.setState({
+      selectedMonth: moment(selectedMonth).month(selectedMonth.month() + 1),
+    });
+  }
+
+
   firstDayOfMonth() {
-    const { dateObject } = this.state;
-    const firstDay = moment(dateObject)
+    const { selectedMonth } = this.state;
+    const firstDay = moment(selectedMonth)
       .startOf('month')
       .format('d');
     return firstDay;
   }
 
-  render() {
-    const blanks = [];
-    for (let i = 0; i < this.firstDayOfMonth(); i += 1) {
-      blanks.push(
-        <td>{''}</td>,
-      );
-    }
+  daysInPreviousMonth() {
+    const { selectedMonth } = this.state;
+    const previousMonth = selectedMonth.month() - 1;
+    const daysInPreviousMonth = moment().month(previousMonth).daysInMonth();
+    return daysInPreviousMonth;
+  }
 
-    const daysInMonth = [];
-    for (let d = 1; d <= this.state.dateObject.daysInMonth(); d += 1) {
-      daysInMonth.push(
-        <td key={d}>
-          {d}
+
+  currentMonthCalendar() {
+    const { selectedMonth } = this.state;
+    const firstDayOfMonth = this.firstDayOfMonth();
+    const previousMonth = selectedMonth.month() - 1;
+    const nextMonth = selectedMonth.month() + 1;
+
+    const previousMonthDays = [];
+    for (let i = 0; i < firstDayOfMonth; i += 1) {
+      const daysUntil = firstDayOfMonth - i;
+      const year = moment().month(previousMonth).year();
+      const month = moment().month(previousMonth).month() + 1;
+      const day = this.daysInPreviousMonth() - daysUntil + 1;
+      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      previousMonthDays.push(
+        <td key={dateValue}>
+          <span onClick={() => { this.onDayClick(dateValue); }}>
+            {day}
+          </span>
         </td>,
       );
     }
 
-    const totalSlots = [...blanks, ...daysInMonth];
+    const currentMonthDays = [];
+    for (let day = 1; day <= selectedMonth.daysInMonth(); day += 1) {
+      const year = selectedMonth.year();
+      const month = selectedMonth.month() + 1;
+      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      currentMonthDays.push(
+        <td key={dateValue}>
+          <span onClick={() => { this.onDayClick(dateValue); }}>
+            {day}
+          </span>
+        </td>,
+      );
+    }
+
+    const totalSlots = [...previousMonthDays, ...currentMonthDays];
+
+    const nextMonthDays = [];
+    for (let day = 1; (totalSlots.length + nextMonthDays.length) % 7 !== 0; day += 1) {
+      const year = moment().month(nextMonth).year();
+      const month = moment().month(nextMonth).month() + 1;
+      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      nextMonthDays.push(
+        <td key={dateValue}>
+          <span onClick={() => { this.onDayClick(dateValue); }}>
+            {day}
+          </span>
+        </td>,
+      );
+    }
+
+    totalSlots.push(...nextMonthDays);
+
     const rows = [];
     let cells = [];
 
@@ -53,31 +131,42 @@ class Calendar extends React.Component {
       }
     });
 
-    const daysinmonth = rows.map((d, i) => {
-      return <tr>{d}</tr>;
-    });
+    const calendar = rows.map((week, i) => <tr key={`week ${i}`}>{week}</tr>);
 
-    const { dateObject } = this.state;
+    return calendar;
+  }
 
+  render() {
+    const { selectedMonth } = this.state;
     return (
       <table>
         <thead>
-          <tr>
-            <th> </th>
-            <th colSpan="5">{dateObject.format('MMMM')} {dateObject.format('Y')}</th>
-            <th> </th>
+          <tr key="Month & Year">
+            <th>
+              <span onClick={() => { this.onPreviousClick(); }}>
+                P
+              </span>
+            </th>
+            <th colSpan="5">
+              {`${selectedMonth.format('MMMM')} ${selectedMonth.format('Y')}`}
+            </th>
+            <th>
+              <span onClick={() => { this.onNextClick(); }}>
+                N
+              </span>
+            </th>
           </tr>
-          <tr>
-            <td>Su</td>
-            <td>Mo</td>
-            <td>Tu</td>
-            <td>We</td>
-            <td>Th</td>
-            <td>Fr</td>
-            <td>Sa</td>
+          <tr key="Days">
+            <td key="Sunday">Su</td>
+            <td key="Monday">Mo</td>
+            <td key="Tuesday">Tu</td>
+            <td key="Wednesday">We</td>
+            <td key="Thursday">Th</td>
+            <td key="Friday">Fr</td>
+            <td key="Saturday">Sa</td>
           </tr>
         </thead>
-        <tbody>{daysinmonth}</tbody>
+        <tbody>{this.currentMonthCalendar()}</tbody>
       </table>
     );
   }

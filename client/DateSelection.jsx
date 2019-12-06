@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import Calendar from './Calendar.jsx';
 
 
@@ -10,19 +11,42 @@ class DateSelection extends React.Component {
   }
 
   render() {
+    const { dates } = this.props;
     return (
-      <select name="date" id="DateSelect">
-        <option value="2019-12-02">Mon, Dec 2</option>
-        <option value="2019-12-03">Tue, Dec 3</option>
-        <option value="2019-12-04">Wed, Dec 4</option>
-        <option value="2019-12-05">Thu, Dec 5</option>
-        <option value="2019-12-06">Fri, Dec 6</option>
-        <option value="2019-12-07">Sat, Dec 7</option>
-        <option value="2019-12-08">Sun, Dec 8</option>
-      </select>
+      <div>
+        <ShowCalendar
+          toggle={(show) => (
+            <select onClick={show} name="date" id="DateSelect">
+              <option value="2019-12-02">Mon, Dec 2</option>
+            </select>
+          )}
+          content={(hide) => (
+            ReactDOM.createPortal(
+              <div>
+                <Calendar dates={dates} />
+                <button type="button" onClick={hide}>Close</button>
+              </div>,
+              document.getElementById('calendarPortal'),
+            )
+          )}
+        />
+        <div id="calendarPortal" />
+      </div>
     );
   }
 }
 
+const ShowCalendar = ({ toggle, content }) => {
+  const [isShown, setIsShown] = useState(false);
+  const hide = () => setIsShown(false);
+  const show = () => setIsShown(true);
+
+  return (
+    <>
+      {toggle(show)}
+      {isShown && content(hide)}
+    </>
+  );
+};
 
 export default DateSelection;

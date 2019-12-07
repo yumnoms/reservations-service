@@ -44,7 +44,6 @@ class Calendar extends React.Component {
     });
   }
 
-
   firstDayOfMonth() {
     const { selectedMonth } = this.state;
     const firstDay = moment(selectedMonth)
@@ -60,6 +59,25 @@ class Calendar extends React.Component {
     return daysInPreviousMonth;
   }
 
+  calendarDaysOpen(monthArray, day, dateValue) {
+    const { openDates } = this.props;
+
+    if (!openDates.includes(dateValue)) {
+      monthArray.push(
+        <td key={dateValue}>
+          {day}
+        </td>,
+      );
+    } else {
+      monthArray.push(
+        <td key={dateValue}>
+          <span onClick={() => { this.onDayClick(dateValue); }}>
+            {day}
+          </span>
+        </td>,
+      );
+    }
+  }
 
   currentMonthCalendar() {
     const { selectedMonth } = this.state;
@@ -74,13 +92,8 @@ class Calendar extends React.Component {
       const month = moment().month(previousMonth).month() + 1;
       const day = this.daysInPreviousMonth() - daysUntil + 1;
       const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      previousMonthDays.push(
-        <td key={dateValue}>
-          <span onClick={() => { this.onDayClick(dateValue); }}>
-            {day}
-          </span>
-        </td>,
-      );
+
+      this.calendarDaysOpen(previousMonthDays, day, dateValue);
     }
 
     const currentMonthDays = [];
@@ -88,13 +101,8 @@ class Calendar extends React.Component {
       const year = selectedMonth.year();
       const month = selectedMonth.month() + 1;
       const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      currentMonthDays.push(
-        <td key={dateValue}>
-          <span onClick={() => { this.onDayClick(dateValue); }}>
-            {day}
-          </span>
-        </td>,
-      );
+
+      this.calendarDaysOpen(currentMonthDays, day, dateValue);
     }
 
     const totalSlots = [...previousMonthDays, ...currentMonthDays];
@@ -104,13 +112,8 @@ class Calendar extends React.Component {
       const year = moment().month(nextMonth).year();
       const month = moment().month(nextMonth).month() + 1;
       const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      nextMonthDays.push(
-        <td key={dateValue}>
-          <span onClick={() => { this.onDayClick(dateValue); }}>
-            {day}
-          </span>
-        </td>,
-      );
+
+      this.calendarDaysOpen(nextMonthDays, day, dateValue);
     }
 
     totalSlots.push(...nextMonthDays);
@@ -119,16 +122,13 @@ class Calendar extends React.Component {
     let cells = [];
 
     totalSlots.forEach((row, i) => {
-      if (i % 7 !== 0) {
-        cells.push(row);
-      } else {
+      if (i % 7 !== 0) cells.push(row);
+      else {
         rows.push(cells);
         cells = [];
         cells.push(row);
       }
-      if (i === totalSlots.length - 1) {
-        rows.push(cells);
-      }
+      if (i === totalSlots.length - 1) rows.push(cells);
     });
 
     const calendar = rows.map((week, i) => <tr key={`week ${i}`}>{week}</tr>);

@@ -14,7 +14,7 @@ class TimeSelection extends React.Component {
       if (timeValue < '12:00:00') children.push(<option value={timeValue}>{timeDisplay} am</option>);
       else {
         if (timeValue >= '13:00:00') timeDisplay = `${Number(hh) - 12}:${mm}`;
-        children.push(<option value={timeValue}>{timeDisplay} pm</option>);
+        children.push(<option key={timeValue} value={timeValue}>{timeDisplay} pm</option>);
       }
 
       if (mm === '30') timeValue = `${Number(hh) + 1}:00:00`;
@@ -24,9 +24,10 @@ class TimeSelection extends React.Component {
   }
 
   render() {
+    const { modal } = this.props;
     return (
       <span>
-        <select name="time" id="TimeSelect">
+        <select name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
           {this.createSelections()}
         </select>
       </span>

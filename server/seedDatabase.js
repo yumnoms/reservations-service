@@ -3,7 +3,7 @@ const db = require('./database.js');
 
 
 const numberOfRestaurants = process.env.TEST ? 1 : 100;
-const numberOfTables = process.env.TEST ? 100 : 100000;
+const numberOfTables = process.env.TEST ? 100 : 50000;
 
 
 const seedRestaurants = () => {
@@ -37,7 +37,7 @@ const seedTables = () => {
           const tableSize = 2 * faker.random.number({ min: 1, max: (info.max_party / 2) });
           let startTime = `${faker.random.number({ min: 9, max: 23 })}:${faker.random.arrayElement(['00', '15', '30', '45'])}:00`;
 
-          while (startTime < info.open && startTime > info.close) {
+          while (startTime < info.open || startTime > info.close) {
             startTime = `${faker.random.number({ min: 9, max: 23 })}:${faker.random.arrayElement(['00', '15', '30', '45'])}:00`;
           }
 

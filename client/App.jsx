@@ -3,6 +3,7 @@ import $ from 'jquery';
 import DateSelection from './DateSelection.jsx';
 import TimeSelection from './TimeSelection.jsx';
 import PeopleSelection from './PeopleSelection.jsx';
+import ResultsModal from './ResultsModal.jsx';
 
 
 class App extends React.Component {
@@ -10,9 +11,14 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      restaurantId: '',
       restaurantInfo: {},
+      searchResults: {},
       showResults: false,
     };
+
+    this.submitSearch = this.submitSearch.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
 
@@ -23,32 +29,68 @@ class App extends React.Component {
       method: 'GET',
       success: (response) => {
         this.setState({
+          restaurantId,
           restaurantInfo: response,
         });
       },
     });
   }
 
+  closeModal() {
+    this.setState({
+      showResults: false,
+    });
+  }
+
+  submitSearch(modal) {
+    const { restaurantId } = this.state;
+    const date = document.getElementById(`DateSelect${modal ? 'Modal' : ''}`).value;
+    const time = document.getElementById(`TimeSelect${modal ? 'Modal' : ''}`).value;
+    const people = document.getElementById(`PeopleSelect${modal ? 'Modal' : ''}`).value;
+
+    $.ajax({
+      url: `/api${restaurantId}search`,
+      method: 'GET',
+      data: {
+        date,
+        time,
+        people,
+      },
+      success: (response) => {
+        this.setState({
+          searchResults: response,
+          showResults: true,
+        });
+      },
+    });
+  }
+
+
   render() {
-    const { restaurantInfo } = this.state;
-    const {
-      name,
-      open,
-      close,
-      min,
-      max,
-      dates,
-    } = restaurantInfo;
+    const { restaurantInfo, showResults, searchResults } = this.state;
+    const modalDisplay = showResults
+      ? (
+        <ResultsModal
+          restaurantInfo={restaurantInfo}
+          results={searchResults}
+          submitSearch={this.submitSearch}
+          closeModal={this.closeModal}
+        />
+      )
+      : null;
 
     return (
       <div>
         <h2>Make a Reservation</h2>
         <form>
-          <div><DateSelection dates={dates} /></div>
-          <TimeSelection open={open} close={close} />
-          <PeopleSelection min={min} max={max} />
-          <p><button type="button">Find a Table</button></p>
+          <div><DateSelection dates={restaurantInfo.dates} /></div>
+          <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} />
+          <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} />
+          <p><button type="button" onClick={() => this.submitSearch(false)}>Find a Table</button></p>
         </form>
+        <div>
+          {modalDisplay}
+        </div>
       </div>
     );
   }

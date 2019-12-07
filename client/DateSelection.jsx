@@ -14,6 +14,14 @@ class DateSelection extends React.Component {
     this.changeSelectedDate = this.changeSelectedDate.bind(this);
   }
 
+  componentDidMount() {
+    const { selectedDate } = this.props;
+
+    this.setState({
+      selectedDate: moment(selectedDate) || moment(),
+    });
+  }
+
   changeSelectedDate(newDate) {
     this.setState({
       selectedDate: newDate,
@@ -21,14 +29,14 @@ class DateSelection extends React.Component {
   }
 
   render() {
-    const { dates } = this.props;
+    const { dates, modal } = this.props;
     const { selectedDate } = this.state;
     const day = selectedDate.format('ddd');
     const month = selectedDate.format('MMM');
     const date = selectedDate.date();
     const dateDisplay = `${day}, ${month} ${date}`;
     return (
-      <div>
+      <span>
         <ShowCalendar
           toggle={(show) => (
             <input
@@ -51,8 +59,8 @@ class DateSelection extends React.Component {
             </div>
           )}
         />
-        <input type="hidden" name="date" id="DateSelect" value={selectedDate} readOnly />
-      </div>
+        <input type="hidden" name="date" id={`DateSelect${modal ? 'Modal' : ''}`} value={moment(selectedDate).format('YYYY-MM-DD')} readOnly />
+      </span>
     );
   }
 }
@@ -81,10 +89,10 @@ const ShowCalendar = ({ toggle, content }) => {
 
 
   return (
-    <div ref={ref}>
+    <span ref={ref}>
       {toggle(show)}
       {isShown && content(hide)}
-    </div>
+    </span>
   );
 };
 

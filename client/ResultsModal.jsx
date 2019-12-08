@@ -100,7 +100,8 @@ const ModalContainer = styled.div`
   background-color: #fff;
   border-radius: 5px;
   margin: auto;
-  padding: 0px 80px 40px;
+  padding: 40px 80px;
+  position: relative;
   text-align: center;
   width: 820px;
   z-index: 51;
@@ -108,8 +109,8 @@ const ModalContainer = styled.div`
 
 const CloseModal = styled.div`
   cursor: pointer;
-  position: relative;
-  right: -70px;
+  position: absolute;
+  right: 10px;
   top: 10px;
   text-align: right;
 `;

@@ -85,8 +85,10 @@ class App extends React.Component {
         <h2>Make a Reservation</h2>
         <form>
           <div><BottomPadding><DateSelection dates={restaurantInfo.dates} /></BottomPadding></div>
-          <BottomPadding><TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} /></BottomPadding>
-          <BottomPadding><PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} /></BottomPadding>
+          <BottomPadding>
+            <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} />
+            <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} />
+          </BottomPadding>
           <div><ButtonStyle type="button" onClick={() => this.submitSearch(false)}>Find a Table</ButtonStyle></div>
         </form>
         <div>
@@ -104,6 +106,7 @@ const AppContainer = styled.div`
   background: #fff;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
+  cursor: default;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   padding: 0px 11px 11px 11px;
   width: 340px;
@@ -111,19 +114,24 @@ const AppContainer = styled.div`
 
 const ButtonStyle = styled.button`
   background: #d32323;
-  border: 1px solid #d32323;
-  border-radius: 3px;
+  border-radius: 5px;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 14px;
   font-weight: 700;
   padding: 10px 30px
   text-align: center;
   width: 100%;
   vertical-align: middle;
+
+  &:hover {
+    background-color: #e33b3b;
+    -webkit-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+  }
 `;
 
 const BottomPadding = styled.span`

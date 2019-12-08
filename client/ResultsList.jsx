@@ -1,4 +1,7 @@
 import React from 'react';
+import moment from 'moment';
+import styled from 'styled-components';
+
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -39,24 +42,58 @@ class ResultsList extends React.Component {
 
   render() {
     return (
-      <span>
+      <>
         {this.sortResults().map((timeGroup) => {
+          const tableTime = moment(timeGroup[0].time, 'H:mm:ss').format('h:mm a')
           if (timeGroup[0].isOpen) {
             return (
-              <span key={timeGroup[0].id} onClick={() => {
+              <OpenStyle key={timeGroup[0].id} onClick={() => {
                 this.makeReservation(timeGroup[0].id);
               }}>
-                {timeGroup[0].time}
-              </span>
+                {tableTime}
+              </OpenStyle>
             );
           }
 
-          return <span key={timeGroup[0].id}>{timeGroup[0].time}</span>;
+          return <ClosedStyle key={timeGroup[0].id}>{tableTime}</ClosedStyle>;
         })}
-      </span>
+      </>
     );
   }
 }
 
 
 export default ResultsList;
+
+
+const ClosedStyle = styled.span`
+  background: #ebebeb;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #666;
+  display: inline-block;
+  font-size: 14px;
+  padding: 8px 25px;
+  text-align: center;
+  text-decoration: line-through;
+  vertical-align: middle;
+`;
+
+const OpenStyle = styled.span`
+  background: #0097ec;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  padding: 8px 25px;
+  text-align: center;
+  vertical-align: middle;
+  &:hover {
+    background-color: #3ab5fc;
+    -webkit-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+  }
+`;

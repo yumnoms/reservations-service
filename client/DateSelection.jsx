@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import Calendar from './Calendar.jsx';
-import Icons from './Icons.jsx'
+import Icons from './Icons.jsx';
 
 
 class DateSelection extends React.Component {
@@ -33,10 +33,8 @@ class DateSelection extends React.Component {
   render() {
     const { dates, modal } = this.props;
     const { selectedDate } = this.state;
-    const day = selectedDate.format('ddd');
-    const month = selectedDate.format('MMM');
-    const date = selectedDate.date();
-    const dateDisplay = `${day}, ${month} ${date}`;
+    const dateDisplay = moment(selectedDate).format('ddd, MMM D');
+
     return (
       <span>
         <ShowCalendar

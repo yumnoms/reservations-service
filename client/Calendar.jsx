@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import Icons from './Icons.jsx';
 
 
 class Calendar extends React.Component {
@@ -150,7 +151,7 @@ class Calendar extends React.Component {
           <tr key="Month & Year">
             <th>
               <PrevNextButton onClick={() => { this.onPreviousClick(); }}>
-                &#8249;
+                <Icons.LeftIcon />
               </PrevNextButton>
             </th>
             <TitleStyle colSpan="5">
@@ -158,7 +159,7 @@ class Calendar extends React.Component {
             </TitleStyle>
             <th>
               <PrevNextButton onClick={() => { this.onNextClick(); }}>
-                &#8250;
+                <Icons.RightIcon />
               </PrevNextButton>
             </th>
           </tr>

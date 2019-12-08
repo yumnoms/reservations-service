@@ -81,10 +81,67 @@ const TriangleDown = ({
   </svg>
 );
 
+const ClosingIcon = ({
+  width = '24',
+  height = '24',
+  id = 'ClosingIcon',
+  viewBox = '0 0 24 24'
+}) => (
+  <svg
+    id={id}
+    height={height}
+    width={width}
+    viewBox={viewBox}
+  >
+    <path
+      d="M17.657 19.07L12 13.415 6.343 19.07 4.93 17.658 10.585 12 4.93 6.343 6.342 4.93 12 10.585l5.657-5.657L19.07 6.34 13.416 12l5.657 5.657-1.413 1.414z"
+    />
+  </svg>
+);
+
+const LeftIcon = ({
+  width = '24',
+  height = '24',
+  id = 'LeftIcon',
+  viewBox = '0 0 24 24'
+}) => (
+  <svg
+    id={id}
+    height={height}
+    width={width}
+    viewBox={viewBox}
+  >
+    <path
+      d="M14.475 18.364l1.414-1.414L10.94 12l4.95-4.95-1.415-1.414L8.11 12l6.365 6.364z"
+    />
+  </svg>
+);
+
+const RightIcon = ({
+  width = '24',
+  height = '24',
+  id = 'RightIcon',
+  viewBox = '0 0 24 24'
+}) => (
+  <svg
+    id={id}
+    height={height}
+    width={width}
+    viewBox={viewBox}
+  >
+    <path
+      d="M9.525 5.636L8.11 7.05 13.06 12l-4.95 4.95 1.415 1.414L15.89 12 9.524 5.636z"
+    />
+  </svg>
+);
+
 
 export default {
   ClockIcon,
   CalIcon,
   PeopleIcon,
   TriangleDown,
+  ClosingIcon,
+  LeftIcon,
+  RightIcon,
 };

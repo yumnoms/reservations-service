@@ -10,59 +10,56 @@ import ResultsList from './ResultsList.jsx';
 import Icons from './Icons.jsx';
 
 
-class Results extends React.Component {
-  constructor(props) {
-    super(props);
+const Results = (props) => {
+  const {
+    restaurantInfo,
+    results,
+    modalTime,
+    modalPeople,
+    submitSearch,
+    closeModal,
+  } = props;
 
-    this.state = {};
-  }
+  const selectedDate = document.getElementById('DateSelectModal')
+    ? document.getElementById('DateSelectModal').value
+    : document.getElementById('DateSelect').value;
+
+  const dateDisplay = moment(selectedDate).format('ddd, MMM D');
+
+  const showResults = results.length !== 0
+    ? (<ResultsList results={results} closeModal={closeModal} />)
+    : <NoAvailability>No Availability</NoAvailability>;
 
 
-  render() {
-    const {
-      restaurantInfo,
-      results,
-      submitSearch,
-      closeModal,
-    } = this.props;
-    const selectedDate = document.getElementById('DateSelectModal')
-      ? document.getElementById('DateSelectModal').value
-      : document.getElementById('DateSelect').value;
-    const dateDisplay = moment(selectedDate).format('ddd, MMM D');
-    const showResults = results.length !== 0
-      ? (<ResultsList results={results} closeModal={closeModal} />)
-      : <NoAvailability>No Availability</NoAvailability>;
-
-    return (
-      <ModalOverlay>
-        <div>
-          <LogoStyle>
-            <Icons.YelpIcon />
-            Reservations
-          </LogoStyle>
-        </div>
-        <ModalContainer>
-          <CloseModal onClick={closeModal}><Icons.ClosingIcon /></CloseModal>
-          <BottomPadding><h1>{restaurantInfo.name}</h1></BottomPadding>
-          <FlexBox>
-            <FlexSize1><DateSelection dates={restaurantInfo.dates} selectedDate={selectedDate} modal="true" /></FlexSize1>
-            <ContainerMargin>
-              <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} modal="true" />
-              <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} modal="true" />
-            </ContainerMargin>
-            <ButtonStyle type="button" onClick={() => submitSearch(true)}>Find a Table</ButtonStyle>
-          </FlexBox>
-          <FlexBox>
-            <FlexSize1><h3>{dateDisplay}</h3></FlexSize1>
-            <FlexSize7>
-              {showResults}
-            </FlexSize7>
-          </FlexBox>
-        </ModalContainer>
-      </ModalOverlay>
-    );
-  }
-}
+  return (
+    <ModalOverlay>
+      <div>
+        <LogoStyle>
+          <Icons.YelpIcon />
+          Reservations
+        </LogoStyle>
+      </div>
+      <ModalContainer>
+        <CloseModal onClick={closeModal}><Icons.ClosingIcon /></CloseModal>
+        <BottomPadding><h1>{restaurantInfo.name}</h1></BottomPadding>
+        <FlexBox>
+          <FlexSize1><DateSelection dates={restaurantInfo.dates} selectedDate={selectedDate} modal="true" /></FlexSize1>
+          <ContainerMargin>
+            <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} modalTime={modalTime} modal="true" />
+            <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} modalPeople={modalPeople} modal="true" />
+          </ContainerMargin>
+          <ButtonStyle type="button" onClick={() => submitSearch(true)}>Find a Table</ButtonStyle>
+        </FlexBox>
+        <FlexBox>
+          <FlexSize1><h3>{dateDisplay}</h3></FlexSize1>
+          <FlexSize7>
+            {showResults}
+          </FlexSize7>
+        </FlexBox>
+      </ModalContainer>
+    </ModalOverlay>
+  );
+};
 
 
 export default Results;

@@ -15,6 +15,8 @@ class App extends React.Component {
     this.state = {
       restaurantId: '',
       restaurantInfo: {},
+      modalTime: null,
+      modalPeople: null,
       searchResults: {},
       showResults: false,
     };
@@ -60,6 +62,8 @@ class App extends React.Component {
       },
       success: (response) => {
         this.setState({
+          modalTime: time,
+          modalPeople: people,
           searchResults: response,
           showResults: true,
         });
@@ -69,7 +73,13 @@ class App extends React.Component {
 
 
   render() {
-    const { restaurantInfo, showResults, searchResults } = this.state;
+    const {
+      restaurantInfo,
+      modalTime,
+      modalPeople,
+      showResults,
+      searchResults,
+    } = this.state;
     const modalDisplay = showResults
       ? (
         <ResultsModal
@@ -77,6 +87,8 @@ class App extends React.Component {
           results={searchResults}
           submitSearch={this.submitSearch}
           closeModal={this.closeModal}
+          modalTime={modalTime}
+          modalPeople={modalPeople}
         />
       )
       : null;

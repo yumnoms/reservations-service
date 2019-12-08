@@ -6,9 +6,15 @@ import styled from 'styled-components';
 import Icons from './Icons.jsx';
 
 
-class TimeSelection extends React.Component {
-  createSelections() {
-    const { open, close } = this.props;
+const TimeSelection = (props) => {
+  const {
+    open,
+    close,
+    modalTime,
+    modal,
+  } = props;
+
+  const createSelections = () => {
     const children = [];
 
     let timeValue = open;
@@ -17,31 +23,35 @@ class TimeSelection extends React.Component {
       const mm = timeValue.split(':')[1];
       let timeDisplay = `${hh}:${mm}`;
 
-      if (timeValue < '12:00:00') children.push(<option value={timeValue}>{timeDisplay} am</option>);
+      if (timeValue < '12:00:00') children.push(<option value={timeValue} selected={modalTime === timeValue}>{timeDisplay} am</option>);
       else {
         if (timeValue >= '13:00:00') timeDisplay = `${Number(hh) - 12}:${mm}`;
-        children.push(<option key={timeValue} value={timeValue}>{timeDisplay} pm</option>);
+        children.push(
+          <option
+            key={timeValue}
+            value={timeValue}
+            selected={modalTime === timeValue}
+          >{timeDisplay} pm
+          </option>,
+        );
       }
 
       if (mm === '30') timeValue = `${Number(hh) + 1}:00:00`;
       else timeValue = `${String(hh).padStart(2, '0')}:${Number(mm) + 30}:00`;
     }
     return children;
-  }
+  };
 
-  render() {
-    const { modal } = this.props;
-    return (
-      <SelectContainer>
-        <IconAlignLeft><Icons.ClockIcon /></IconAlignLeft>
-        <SelectStyle name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
-          {this.createSelections()}
-        </SelectStyle>
-        <IconAlignRight><Icons.TriangleDown /></IconAlignRight>
-      </SelectContainer>
-    );
-  }
-}
+  return (
+    <SelectContainer>
+      <IconAlignLeft><Icons.ClockIcon /></IconAlignLeft>
+      <SelectStyle name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
+        {createSelections()}
+      </SelectStyle>
+      <IconAlignRight><Icons.TriangleDown /></IconAlignRight>
+    </SelectContainer>
+  );
+};
 
 
 export default TimeSelection;

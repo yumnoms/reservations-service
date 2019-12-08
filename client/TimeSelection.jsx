@@ -13,7 +13,7 @@ class TimeSelection extends React.Component {
 
     let timeValue = open;
     while (timeValue !== close) {
-      const hh = timeValue.split(':')[0];
+      const hh = Number(timeValue.split(':')[0]);
       const mm = timeValue.split(':')[1];
       let timeDisplay = `${hh}:${mm}`;
 
@@ -24,7 +24,7 @@ class TimeSelection extends React.Component {
       }
 
       if (mm === '30') timeValue = `${Number(hh) + 1}:00:00`;
-      else timeValue = `${hh}:${Number(mm) + 30}:00`;
+      else timeValue = `${String(hh).padStart(2, '0')}:${Number(mm) + 30}:00`;
     }
     return children;
   }

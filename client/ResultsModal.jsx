@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/extensions */
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -17,20 +19,29 @@ class Results extends React.Component {
 
 
   render() {
-    const { restaurantInfo, results, submitSearch, closeModal } = this.props;
+    const {
+      restaurantInfo,
+      results,
+      submitSearch,
+      closeModal,
+    } = this.props;
     const selectedDate = document.getElementById('DateSelect').value;
     const dateDisplay = moment(selectedDate).format('ddd, MMM D');
-
-    console.log(results);
     const showResults = results.length !== 0
       ? (<ResultsList results={results} closeModal={closeModal} />)
       : <NoAvailability>No Availability</NoAvailability>;
 
     return (
       <ModalOverlay>
+        <div>
+          <LogoStyle>
+            <Icons.YelpIcon />
+            Reservations
+          </LogoStyle>
+        </div>
         <ModalContainer>
           <CloseModal onClick={closeModal}><Icons.ClosingIcon /></CloseModal>
-          <BottomPadding><h2>{restaurantInfo.name}</h2></BottomPadding>
+          <BottomPadding><h1>{restaurantInfo.name}</h1></BottomPadding>
           <FlexBox>
             <DateSelection dates={restaurantInfo.dates} selectedDate={selectedDate} modal="true" />
             <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} modal="true" />
@@ -81,14 +92,14 @@ const ModalOverlay = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .7);
+  text-align: center;
 `;
 
 const ModalContainer = styled.div`
   background-color: #fff;
   border-radius: 5px;
   margin: auto;
-  margin-top: 150px;
   padding: 0px 80px 40px;
   text-align: center;
   width: 820px;
@@ -105,6 +116,7 @@ const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 10px;
 `;
 
 const FlexSize1 = styled.div`
@@ -135,4 +147,13 @@ const NoAvailability = styled.div`
 const BottomPadding = styled.span`
   display: inline-block;
   padding-bottom: 30px;
+`;
+
+const LogoStyle = styled.div`
+  color: #fff;
+  display: inline-flex;
+  font-size: 15pt;
+  font-weight: 500;
+  line-height: 45px;
+  padding: 50px 0;
 `;

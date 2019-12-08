@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -36,20 +37,23 @@ class ResultsList extends React.Component {
     return sortedResults;
   }
 
-  makeReservation(tableId) {
-    console.log(tableId);
-  }
+  // makeReservation(tableId) {
+  //   console.log(tableId);
+  // }
 
   render() {
     return (
       <>
         {this.sortResults().map((timeGroup) => {
-          const tableTime = moment(timeGroup[0].time, 'H:mm:ss').format('h:mm a')
+          const tableTime = moment(timeGroup[0].time, 'H:mm:ss').format('h:mm a');
           if (timeGroup[0].isOpen) {
             return (
-              <OpenStyle key={timeGroup[0].id} onClick={() => {
-                this.makeReservation(timeGroup[0].id);
-              }}>
+              <OpenStyle
+                key={timeGroup[0].id}
+                onClick={() => {
+                  this.makeReservation(timeGroup[0].id);
+                }}
+              >
                 {tableTime}
               </OpenStyle>
             );

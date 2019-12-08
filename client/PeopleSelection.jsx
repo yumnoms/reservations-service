@@ -1,6 +1,9 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/extensions */
 import React from 'react';
 import styled from 'styled-components';
-import Icons from './Icons.jsx'
+import Icons from './Icons.jsx';
 
 
 const PeopleSelection = (props) => {
@@ -18,9 +21,9 @@ const PeopleSelection = (props) => {
   return (
     <span>
       <IconAlign><Icons.PeopleIcon /></IconAlign>
-      <span><SelectStyle name="people" id={`PeopleSelect${modal ? 'Modal' : ''}`}>
-      {createSelections()}
-      </SelectStyle></span>
+      <SelectStyle name="people" id={`PeopleSelect${modal ? 'Modal' : ''}`}>
+        {createSelections()}
+      </SelectStyle>
       <IconAlign><Icons.TriangleDown /></IconAlign>
     </span>
   );

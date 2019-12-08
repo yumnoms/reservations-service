@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import React from 'react';
 import $ from 'jquery';
 import styled from 'styled-components';

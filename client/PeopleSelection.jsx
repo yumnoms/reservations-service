@@ -7,13 +7,25 @@ import Icons from './Icons.jsx';
 
 
 const PeopleSelection = (props) => {
-  const { min, max, modal } = props;
+  const {
+    min,
+    max,
+    modalPeople,
+    modal,
+  } = props;
 
   const createSelections = () => {
     const children = [];
     for (let i = min; i <= max; i += 1) {
-      if (i === 1) children.push(<option value={i}>{i} person</option>);
-      else children.push(<option key={i} value={i}>{i} people</option>);
+      if (i === 1) {
+        children.push(
+          <option key={i} value={i} selected={Number(modalPeople) === i}>{i} person</option>,
+        );
+      } else {
+        children.push(
+          <option key={i} value={i} selected={Number(modalPeople) === i}>{i} people</option>,
+        );
+      }
     }
     return children;
   };

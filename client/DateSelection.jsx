@@ -38,21 +38,19 @@ class DateSelection extends React.Component {
     const dateDisplay = moment(selectedDate).format('ddd, MMM D');
 
     return (
-      <span>
+      <>
         <ShowCalendar
           toggle={(show) => (
-            <span>
-              <span>
-                <IconAlign><Icons.CalIcon /></IconAlign>
-                <InputStyle
-                  onClick={() => show()}
-                  onFocus={() => show()}
-                  value={dateDisplay}
-                  readOnly
-                />
-                <IconAlign><Icons.TriangleDown /></IconAlign>
-              </span>
-            </span>
+            <>
+              <IconAlignLeft><Icons.CalIcon /></IconAlignLeft>
+              <InputStyle
+                onClick={() => show()}
+                onFocus={() => show()}
+                value={dateDisplay}
+                readOnly
+              />
+              <IconAlignRight><Icons.TriangleDown /></IconAlignRight>
+            </>
           )}
           content={(hide) => (
             <CalendarPopover>
@@ -68,7 +66,7 @@ class DateSelection extends React.Component {
           )}
         />
         <input type="hidden" name="date" id={`DateSelect${modal ? 'Modal' : ''}`} value={moment(selectedDate).format('YYYY-MM-DD')} readOnly />
-      </span>
+      </>
     );
   }
 }
@@ -97,10 +95,10 @@ const ShowCalendar = ({ toggle, content }) => {
 
 
   return (
-    <span ref={ref}>
+    <SelectContainer ref={ref}>
       {toggle(show)}
       {isShown && content(hide)}
-    </span>
+    </SelectContainer>
   );
 };
 
@@ -112,21 +110,30 @@ const InputStyle = styled.input`
   -moz-appearance: none;
   appearance: none;
 
-  background: #fff;
+  background-color: transparent;
   border: 1px solid #999;
   border-radius: 3px;
   box-sizing: border-box;
   cursor: pointer;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 14px;
-  padding: 5px 55px 5px 11px;
-  width: 296px;
+  padding: 5px 30px;
+  width: 100%;
+  z-index: 1;
 `;
 
-const IconAlign = styled.span`
+const IconAlignLeft = styled.div`
   display: inline-block;
-  padding: 3px;
-  vertical-align: middle;
+  padding: 5px;
+  position: absolute;
+`;
+
+const IconAlignRight = styled.div`
+  display: inline-block;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+  top: 1px;
 `;
 
 const CalendarPopover = styled.div`
@@ -137,4 +144,13 @@ const CalendarPopover = styled.div`
   margin: 10px;
   position: absolute;
   width: 310px;
+  left: -5px;
+  top: 27px;
+  z-index: 100;
+`;
+
+const SelectContainer = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
 `;

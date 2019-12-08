@@ -19,13 +19,13 @@ const PeopleSelection = (props) => {
   };
 
   return (
-    <span>
-      <IconAlign><Icons.PeopleIcon /></IconAlign>
+    <SelectContainer>
+      <IconAlignLeft><Icons.PeopleIcon /></IconAlignLeft>
       <SelectStyle name="people" id={`PeopleSelect${modal ? 'Modal' : ''}`}>
         {createSelections()}
       </SelectStyle>
-      <IconAlign><Icons.TriangleDown /></IconAlign>
-    </span>
+      <IconAlignRight><Icons.TriangleDown /></IconAlignRight>
+    </SelectContainer>
   );
 };
 
@@ -37,18 +37,36 @@ const SelectStyle = styled.select`
   -moz-appearance: none;
   appearance: none;
 
-  background: #fff;
+  background-color: transparent;
   border: 1px solid #999;
   border-radius: 3px;
   box-sizing: border-box;
   cursor: pointer;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size: 14px;
-  padding: 5px 52px 5px 10px;
+  padding: 5px 30px;
+  width: 100%;
+  z-index: 1;
 `;
 
-const IconAlign = styled.span`
+const IconAlignLeft = styled.div`
   display: inline-block;
-  padding: 3px;
-  vertical-align: middle;
+  padding: 5px;
+  position: absolute;
+`;
+
+const IconAlignRight = styled.div`
+  display: inline-block;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+  top: 1px;
+`;
+
+
+const SelectContainer = styled.div`
+  display: flex;
+  margin-left 6px;
+  position: relative;
+  width: 100%;
 `;

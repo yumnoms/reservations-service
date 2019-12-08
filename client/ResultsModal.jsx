@@ -25,7 +25,9 @@ class Results extends React.Component {
       submitSearch,
       closeModal,
     } = this.props;
-    const selectedDate = document.getElementById('DateSelect').value;
+    const selectedDate = document.getElementById('DateSelectModal')
+      ? document.getElementById('DateSelectModal').value
+      : document.getElementById('DateSelect').value;
     const dateDisplay = moment(selectedDate).format('ddd, MMM D');
     const showResults = results.length !== 0
       ? (<ResultsList results={results} closeModal={closeModal} />)
@@ -43,9 +45,11 @@ class Results extends React.Component {
           <CloseModal onClick={closeModal}><Icons.ClosingIcon /></CloseModal>
           <BottomPadding><h1>{restaurantInfo.name}</h1></BottomPadding>
           <FlexBox>
-            <DateSelection dates={restaurantInfo.dates} selectedDate={selectedDate} modal="true" />
-            <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} modal="true" />
-            <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} modal="true" />
+            <FlexSize1><DateSelection dates={restaurantInfo.dates} selectedDate={selectedDate} modal="true" /></FlexSize1>
+            <ContainerMargin>
+              <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} modal="true" />
+              <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} modal="true" />
+            </ContainerMargin>
             <ButtonStyle type="button" onClick={() => submitSearch(true)}>Find a Table</ButtonStyle>
           </FlexBox>
           <FlexBox>
@@ -67,15 +71,13 @@ export default Results;
 const ButtonStyle = styled.button`
   background: #0097ec;
   border-radius: 3px;
-  box-sizing: border-box;
   color: #fff;
   cursor: pointer;
-  display: inline-block;
+  display: flex;
   font-size: 14px;
   font-weight: 700;
   padding: 8px 25px;
-  text-align: center;
-  vertical-align: middle;
+  white-space: nowrap;
   &:hover {
     background-color: #3ab5fc;
     -webkit-transition: background-color 500ms linear;
@@ -94,6 +96,7 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, .7);
   text-align: center;
+  z-index: 50;
 `;
 
 const ModalContainer = styled.div`
@@ -103,9 +106,11 @@ const ModalContainer = styled.div`
   padding: 0px 80px 40px;
   text-align: center;
   width: 820px;
+  z-index: 51;
 `;
 
 const CloseModal = styled.div`
+  cursor: pointer;
   position: relative;
   right: -70px;
   top: 10px;
@@ -114,7 +119,6 @@ const CloseModal = styled.div`
 
 const FlexBox = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
 `;
@@ -127,7 +131,7 @@ const FlexSize1 = styled.div`
 const FlexSize7 = styled.div`
   display: flex;
   flex-grow: 7;
-  justify-content: space-evenly;
+  justify-content: center;
 `;
 
 const NoAvailability = styled.div`
@@ -147,6 +151,12 @@ const NoAvailability = styled.div`
 const BottomPadding = styled.span`
   display: inline-block;
   padding-bottom: 30px;
+`;
+
+const ContainerMargin = styled.div`
+  display: inline-flex;
+  flex-grow: 2;
+  margin: 0 6px;
 `;
 
 const LogoStyle = styled.div`

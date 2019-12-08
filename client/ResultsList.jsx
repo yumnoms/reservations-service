@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import moment from 'moment';
+import $ from 'jquery';
 import styled from 'styled-components';
 
 
@@ -8,7 +9,9 @@ class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      table: '',
+    };
 
     this.makeReservation = this.makeReservation.bind(this);
   }
@@ -37,11 +40,25 @@ class ResultsList extends React.Component {
     return sortedResults;
   }
 
-  // makeReservation(tableId) {
-  //   console.log(tableId);
-  // }
+  makeReservation(tableId) {
+    const restaurantId = window.location.pathname;
+    $.ajax({
+      url: `/api${restaurantId}reservation`,
+      method: 'POST',
+      data: {
+        table: tableId,
+      },
+      success: (response) => {
+        this.setState({
+          table: response,
+        });
+      },
+    });
+  }
 
   render() {
+    const { table } = this.state;
+    if (table) return (<div>Reservation Successful!</div>);
     return (
       <>
         {this.sortResults().map((timeGroup) => {

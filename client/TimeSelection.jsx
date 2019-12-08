@@ -1,6 +1,9 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/extensions */
 import React from 'react';
 import styled from 'styled-components';
-import Icons from './Icons.jsx'
+import Icons from './Icons.jsx';
 
 
 class TimeSelection extends React.Component {
@@ -31,9 +34,9 @@ class TimeSelection extends React.Component {
     return (
       <span>
         <IconAlign><Icons.ClockIcon /></IconAlign>
-          <SelectStyle name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
-            {this.createSelections()}
-          </SelectStyle>
+        <SelectStyle name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
+          {this.createSelections()}
+        </SelectStyle>
         <IconAlign><Icons.TriangleDown /></IconAlign>
       </span>
     );

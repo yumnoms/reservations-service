@@ -83,9 +83,9 @@ class App extends React.Component {
 
     return (
       <AppContainer>
-        <h2>Make a Reservation</h2>
+        <BottomPadding><h2>Make a Reservation</h2></BottomPadding>
         <form>
-          <div><BottomPadding><DateSelection dates={restaurantInfo.dates} /></BottomPadding></div>
+          <BottomPadding><DateSelection dates={restaurantInfo.dates} /></BottomPadding>
           <BottomPadding>
             <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} />
             <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} />
@@ -110,7 +110,7 @@ const AppContainer = styled.div`
   cursor: default;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   padding: 0px 11px 11px 11px;
-  width: 340px;
+  width: 320px;
 `;
 
 const ButtonStyle = styled.button`
@@ -135,7 +135,9 @@ const ButtonStyle = styled.button`
   }
 `;
 
-const BottomPadding = styled.span`
-  display: inline-block;
+const BottomPadding = styled.div`
+  display: inline-flex;
   padding-bottom: 6px;
+  position: relative;
+  width: 100%;
 `;

@@ -94,6 +94,7 @@ const ClosedStyle = styled.span`
   color: #666;
   display: inline-block;
   font-size: 14px;
+  margin: 0 6px;
   padding: 8px 25px;
   text-align: center;
   text-decoration: line-through;
@@ -108,6 +109,7 @@ const OpenStyle = styled.span`
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
+  margin: 0 6px;
   padding: 8px 25px;
   text-align: center;
   vertical-align: middle;

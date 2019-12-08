@@ -1,4 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
+import Icons from './Icons.jsx'
+
 
 class TimeSelection extends React.Component {
   createSelections() {
@@ -27,9 +30,11 @@ class TimeSelection extends React.Component {
     const { modal } = this.props;
     return (
       <span>
-        <select name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
-          {this.createSelections()}
-        </select>
+        <IconAlign><Icons.ClockIcon /></IconAlign>
+          <SelectStyle name="time" id={`TimeSelect${modal ? 'Modal' : ''}`}>
+            {this.createSelections()}
+          </SelectStyle>
+        <IconAlign><Icons.TriangleDown /></IconAlign>
       </span>
     );
   }
@@ -37,3 +42,25 @@ class TimeSelection extends React.Component {
 
 
 export default TimeSelection;
+
+
+const SelectStyle = styled.select`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  padding: 5px 53px 5px 10px;
+`;
+
+const IconAlign = styled.span`
+  display: inline-block;
+  padding: 3px;
+  vertical-align: middle;
+`;

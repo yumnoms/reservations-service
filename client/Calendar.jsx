@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import styled from 'styled-components';
 
 
 class Calendar extends React.Component {
@@ -52,67 +53,72 @@ class Calendar extends React.Component {
     return firstDay;
   }
 
-  daysInPreviousMonth() {
-    const { selectedMonth } = this.state;
-    const previousMonth = selectedMonth.month() - 1;
-    const daysInPreviousMonth = moment().month(previousMonth).daysInMonth();
-    return daysInPreviousMonth;
-  }
-
   calendarDaysOpen(monthArray, day, dateValue) {
-    const { openDates } = this.props;
+    const { openDates, selectedDate } = this.props;
+    const match = selectedDate.format('YYYY-MM-DD') === dateValue;
 
     if (!openDates.includes(dateValue)) {
       monthArray.push(
-        <td key={dateValue}>
+        <NotSelectable key={dateValue}>
           {day}
-        </td>,
+        </NotSelectable>,
       );
-    } else {
+    } else if (match) {
       monthArray.push(
-        <td key={dateValue}>
+        <SelectedDay key={dateValue}>
           <span onClick={() => { this.onDayClick(dateValue); }}>
             {day}
           </span>
-        </td>,
+        </SelectedDay>,
+      );
+    } else {
+      monthArray.push(
+        <Selectable key={dateValue}>
+          <span onClick={() => { this.onDayClick(dateValue); }}>
+            {day}
+          </span>
+        </Selectable>,
       );
     }
   }
 
-  currentMonthCalendar() {
+  daysFromCurrentMonth() {
+    const { selectedMonth } = this.state;
+
+    const currentMonthDays = [];
+    for (let day = 1; day <= selectedMonth.daysInMonth(); day += 1) {
+      const dateValue = `${selectedMonth.format('YYYY-MM')}-${String(day).padStart(2, '0')}`;
+      this.calendarDaysOpen(currentMonthDays, day, dateValue);
+    }
+
+    return currentMonthDays;
+  }
+
+  daysFromPreviousMonth() {
     const { selectedMonth } = this.state;
     const firstDayOfMonth = this.firstDayOfMonth();
-    const previousMonth = selectedMonth.month() - 1;
-    const nextMonth = selectedMonth.month() + 1;
+    const previousMonth = selectedMonth.clone().add(-1, 'M');
 
     const previousMonthDays = [];
     for (let i = 0; i < firstDayOfMonth; i += 1) {
       const daysUntil = firstDayOfMonth - i;
-      const year = moment().month(previousMonth).year();
-      const month = moment().month(previousMonth).month() + 1;
-      const day = this.daysInPreviousMonth() - daysUntil + 1;
-      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
+      const day = previousMonth.daysInMonth() - daysUntil + 1;
+      const dateValue = `${previousMonth.format('YYYY-MM')}-${String(day).padStart(2, '0')}`;
       this.calendarDaysOpen(previousMonthDays, day, dateValue);
     }
 
-    const currentMonthDays = [];
-    for (let day = 1; day <= selectedMonth.daysInMonth(); day += 1) {
-      const year = selectedMonth.year();
-      const month = selectedMonth.month() + 1;
-      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return previousMonthDays;
+  }
 
-      this.calendarDaysOpen(currentMonthDays, day, dateValue);
-    }
+  currentMonthCalendar() {
+    const { selectedMonth } = this.state;
 
-    const totalSlots = [...previousMonthDays, ...currentMonthDays];
+    const totalSlots = [...this.daysFromPreviousMonth(), ...this.daysFromCurrentMonth()];
 
+    const nextMonth = selectedMonth.clone().add(1, 'M');
     const nextMonthDays = [];
     for (let day = 1; (totalSlots.length + nextMonthDays.length) % 7 !== 0; day += 1) {
-      const year = moment().month(nextMonth).year();
-      const month = moment().month(nextMonth).month() + 1;
-      const dateValue = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
+      const dateValue = `${nextMonth.format('YYYY-MM')}-${String(day).padStart(2, '0')}`;
       this.calendarDaysOpen(nextMonthDays, day, dateValue);
     }
 
@@ -131,7 +137,7 @@ class Calendar extends React.Component {
       if (i === totalSlots.length - 1) rows.push(cells);
     });
 
-    const calendar = rows.map((week, i) => <tr key={`week ${i}`}>{week}</tr>);
+    const calendar = rows.map((week, i) => <RowStyle key={`week ${i}`}>{week}</RowStyle>);
 
     return calendar;
   }
@@ -139,24 +145,24 @@ class Calendar extends React.Component {
   render() {
     const { selectedMonth } = this.state;
     return (
-      <table>
+      <TableStyle cellspacing="0">
         <thead>
           <tr key="Month & Year">
             <th>
-              <span onClick={() => { this.onPreviousClick(); }}>
-                P
-              </span>
+              <PrevNextButton onClick={() => { this.onPreviousClick(); }}>
+                &#8249;
+              </PrevNextButton>
             </th>
-            <th colSpan="5">
+            <TitleStyle colSpan="5">
               {`${selectedMonth.format('MMMM')} ${selectedMonth.format('Y')}`}
-            </th>
+            </TitleStyle>
             <th>
-              <span onClick={() => { this.onNextClick(); }}>
-                N
-              </span>
+              <PrevNextButton onClick={() => { this.onNextClick(); }}>
+                &#8250;
+              </PrevNextButton>
             </th>
           </tr>
-          <tr key="Days">
+          <DaysStyle key="Days">
             <td key="Sunday">Su</td>
             <td key="Monday">Mo</td>
             <td key="Tuesday">Tu</td>
@@ -164,12 +170,68 @@ class Calendar extends React.Component {
             <td key="Thursday">Th</td>
             <td key="Friday">Fr</td>
             <td key="Saturday">Sa</td>
-          </tr>
+          </DaysStyle>
         </thead>
         <tbody>{this.currentMonthCalendar()}</tbody>
-      </table>
+      </TableStyle>
     );
   }
 }
 
 export default Calendar;
+
+const DaysStyle = styled.tr`
+  color: #d0021b;  
+  font-size: 8pt;
+  font-weight: 900;
+  text-align: center;
+  & > td {
+    padding-bottom: 5px;
+  }
+`;
+
+const TableStyle = styled.table`
+  border-collapse: collapse;
+`;
+
+const NotSelectable = styled.td`
+  color: #dce0e0;
+`;
+
+const Selectable = styled.td`
+  cursor: pointer;
+  &:hover {
+    background-color: AliceBlue;
+  }
+`;
+
+const SelectedDay = styled.td`
+  background-color: #d0021b;
+  cursor: pointer;
+  color: #fff;
+`;
+
+const RowStyle = styled.tr`
+  & > td {
+    border: 1px solid #ccc;
+    font-size: 10pt;
+    font-weight: 400;
+    line-height: 25px;
+    padding: 5px;
+    text-align: center;
+    width: 37px;
+  }
+`;
+
+const TitleStyle = styled.th`
+  font-size: 11pt;
+  padding: 20px;
+`;
+
+const PrevNextButton = styled.span`
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  height: 24px;
+  width: 24px;
+`;

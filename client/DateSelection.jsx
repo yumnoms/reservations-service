@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import moment from 'moment';
+import styled from 'styled-components';
 import Calendar from './Calendar.jsx';
+import Icons from './Icons.jsx'
 
 
 class DateSelection extends React.Component {
@@ -39,15 +41,21 @@ class DateSelection extends React.Component {
       <span>
         <ShowCalendar
           toggle={(show) => (
-            <input
-              onClick={() => show()}
-              onFocus={() => show()}
-              value={dateDisplay}
-              readOnly
-            />
+            <span>
+              <span>
+                <IconAlign><Icons.CalIcon /></IconAlign>
+                <InputStyle
+                  onClick={() => show()}
+                  onFocus={() => show()}
+                  value={dateDisplay}
+                  readOnly
+                />
+                <IconAlign><Icons.TriangleDown /></IconAlign>
+              </span>
+            </span>
           )}
           content={(hide) => (
-            <div>
+            <CalendarPopover>
               <Calendar
                 openDates={dates}
                 selectedDate={selectedDate}
@@ -56,7 +64,7 @@ class DateSelection extends React.Component {
                   hide();
                 }}
               />
-            </div>
+            </CalendarPopover>
           )}
         />
         <input type="hidden" name="date" id={`DateSelect${modal ? 'Modal' : ''}`} value={moment(selectedDate).format('YYYY-MM-DD')} readOnly />
@@ -97,3 +105,36 @@ const ShowCalendar = ({ toggle, content }) => {
 };
 
 export default DateSelection;
+
+
+const InputStyle = styled.input`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  padding: 5px 55px 5px 11px;
+  width: 296px;
+`;
+
+const IconAlign = styled.span`
+  display: inline-block;
+  padding: 3px;
+  vertical-align: middle;
+`;
+
+const CalendarPopover = styled.div`
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 10px;
+  position: absolute;
+  width: 310px;
+`;

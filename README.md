@@ -34,12 +34,16 @@ mysql -u student -p < server/schema.sql  // password is student
 npm run seed
 ```
 
-### Generate bundle.js file and start
+### start script
 
 ```sh
-npm run build
 npm run start
 ```
+
+### bundle target element id
+
+id="reservations"
+
 
 ## Requirements
 

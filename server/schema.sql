@@ -1,4 +1,4 @@
-DROP DATABASE YumNomsReservations;
+-- DROP DATABASE YumNomsReservations;
 
 CREATE DATABASE YumNomsReservations;
 

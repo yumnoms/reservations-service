@@ -1,23 +1,45 @@
-# Project Name
+# Reservations
 
-> Project description
+This reservations service for YumNoms mimics the interface used for Yelp Restaurants reservations.
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/yumnoms/reviews-service
+  - https://github.com/yumnoms/popular-dishes-service
+  - https://github.com/yumnoms/photo-carousel-service
+  - https://github.com/yumnoms/Laurence-Nguyen-proxy
 
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+2. [Requirements](#requirements)
+3. [Development](#development)
+
 
 ## Usage
 
-> Some usage instructions
+### Setting up database/seeding data
+
+For mySQL, if student/student user does not exist,
+run mySQL and run:
+
+```sh
+CREATE USER 'student'@'localhost' IDENTIFIED BY 'student';
+```
+
+and then in root directory of terminal:
+
+```sh
+mysql -u student -p < server/schema.sql  // password is student
+npm run seed
+```
+
+### Generate bundle.js file and start
+
+```sh
+npm run build
+npm run start
+```
 
 ## Requirements
 
@@ -28,6 +50,7 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 ## Development
 
+
 ### Installing Dependencies
 
 From within the root directory:
@@ -36,4 +59,3 @@ From within the root directory:
 npm install -g webpack
 npm install
 ```
-

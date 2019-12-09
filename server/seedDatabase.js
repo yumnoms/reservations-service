@@ -177,7 +177,11 @@ const seedTables = () => {
 
 
 module.exports = (() => (
-  seedRestaurants()
+  db.sequelize.sync({ force: true })
+    .then(() => {
+      console.log('Successfully synced database!');
+      return seedRestaurants();
+    })
     .then(() => {
       console.log('Successfully seeded Restaurants!');
       return seedTables();

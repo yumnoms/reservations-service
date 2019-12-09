@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 
 
-const database = process.env.TEST ? 'YumNoms_TEST' : 'YumNoms';
+const database = process.env.TEST ? 'YumNomsReservations_TEST' : 'YumNomsReservations';
 const sequelize = new Sequelize(database, 'student', 'student', {
   dialect: 'mysql',
-  port: 3306,
+  port: 3350,
 });
 
 const Restaurant = sequelize.define('Restaurant', {

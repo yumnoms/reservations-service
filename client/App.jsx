@@ -29,7 +29,7 @@ class App extends React.Component {
   componentDidMount() {
     const restaurantId = window.location.pathname;
     $.ajax({
-      url: `/api${restaurantId}`,
+      url: `http://localhost:3010/api${restaurantId}`,
       method: 'GET',
       success: (response) => {
         this.setState({
@@ -53,7 +53,7 @@ class App extends React.Component {
     const people = document.getElementById(`PeopleSelect${modal ? 'Modal' : ''}`).value;
 
     $.ajax({
-      url: `/api${restaurantId}search`,
+      url: `http://localhost:3010/api${restaurantId}search`,
       method: 'GET',
       data: {
         date,

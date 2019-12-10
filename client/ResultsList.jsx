@@ -43,7 +43,7 @@ class ResultsList extends React.Component {
   makeReservation(tableId) {
     const restaurantId = window.location.pathname;
     $.ajax({
-      url: `/api${restaurantId}reservation`,
+      url: `http://localhost:3010/api${restaurantId}reservation`,
       method: 'POST',
       data: {
         table: tableId,

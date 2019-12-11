@@ -20,7 +20,8 @@
     ]
   },
   "scripts": {
-    "build": "webpack -d --watch ",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack -d --watch",
     "lint": "eslint '**/*.{js,jsx}'",
     "seed": "node server/seedDatabase.js",
     "start": "node server/start.js",

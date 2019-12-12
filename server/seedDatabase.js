@@ -3,7 +3,7 @@ const db = require('./database.js');
 
 
 const numberOfRestaurants = process.env.TEST ? 1 : 100;
-const numberOfTables = process.env.TEST ? 100 : 100000;
+const numberOfTables = process.env.TEST ? 100 : 50000;
 
 
 const first = [
@@ -130,7 +130,7 @@ const seedRestaurants = () => {
     const newEntry = {
       name: generateName(),
       min_party: faker.random.number({ min: 1, max: 2 }),
-      max_party: faker.random.arrayElement([4, 6, 8, 10]),
+      max_party: faker.random.arrayElement([4, 6, 8]),
       open: `${faker.random.number({ min: 9, max: 16 })}:${faker.random.arrayElement(['00', '30'])}:00`,
       close: `${faker.random.number({ min: 20, max: 23 })}:${faker.random.arrayElement(['00', '30'])}:00`,
     };
@@ -160,7 +160,7 @@ const seedTables = () => {
 
           const newEntry = {
             restaurant_id: restaurant.dataValues.id,
-            date: faker.date.recent(process.env.TEST ? -1 : -100),
+            date: faker.date.recent(process.env.TEST ? -1 : -60),
             time: startTime,
             min_seating: tableSize - 1,
             max_seating: tableSize,

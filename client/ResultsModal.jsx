@@ -35,8 +35,8 @@ const Results = (props) => {
     <ModalOverlay>
       <div>
         <LogoStyle>
-          <Icons.YelpIcon />
-          Reservations
+          {/* <Icons.YelpIcon /> */}
+          <img src="logo.png" alt="YumNoms Logo" width="125px" height="125px" />
         </LogoStyle>
       </div>
       <ModalContainer>
@@ -66,7 +66,7 @@ export default Results;
 
 
 const ButtonStyle = styled.button`
-  background: #0097ec;
+  background: coral;
   border-radius: 3px;
   color: #fff;
   cursor: pointer;
@@ -76,7 +76,7 @@ const ButtonStyle = styled.button`
   padding: 8px 25px;
   white-space: nowrap;
   &:hover {
-    background-color: #3ab5fc;
+    background-color: #ff8f66;
     -webkit-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;
@@ -110,8 +110,8 @@ const ModalContainer = styled.div`
 const CloseModal = styled.div`
   cursor: pointer;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 16px;
+  top: 16px;
   text-align: right;
 `;
 

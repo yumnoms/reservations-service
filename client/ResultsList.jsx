@@ -4,6 +4,7 @@ import moment from 'moment';
 import $ from 'jquery';
 import styled from 'styled-components';
 
+// const ec2 = 'http://52.52.160.137';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -11,11 +12,19 @@ class ResultsList extends React.Component {
 
     this.state = {
       table: '',
+      showResults: true,
     };
 
     this.makeReservation = this.makeReservation.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.setState({
+        showResults: true,
+      });
+    }
+  }
 
   sortResults() {
     const { results } = this.props;
@@ -43,7 +52,8 @@ class ResultsList extends React.Component {
   makeReservation(tableId) {
     const restaurantId = window.location.pathname;
     $.ajax({
-      url: `http://localhost:3010/api${restaurantId}reservation`,
+      // url: `${ec2}/api${restaurantId}reservation`,
+      url: `/api${restaurantId}reservation`,
       method: 'POST',
       data: {
         table: tableId,
@@ -51,19 +61,20 @@ class ResultsList extends React.Component {
       success: (response) => {
         this.setState({
           table: response,
+          showResults: false,
         });
       },
     });
   }
 
   render() {
-    const { table } = this.state;
-    if (table) return (<div>Reservation Successful!</div>);
+    const { table, showResults } = this.state;
+    if (!showResults && table) return (<div>Reservation Successful!</div>);
     return (
       <>
         {this.sortResults().map((timeGroup) => {
           const tableTime = moment(timeGroup[0].time, 'H:mm:ss').format('h:mm a');
-          if (timeGroup[0].isOpen) {
+          if (timeGroup[0].isOpen && tableTime > moment().format('h:mm a')) {
             return (
               <OpenStyle
                 key={timeGroup[0].id}
@@ -102,7 +113,7 @@ const ClosedStyle = styled.span`
 `;
 
 const OpenStyle = styled.span`
-  background: #0097ec;
+  background: coral;
   border-radius: 3px;
   box-sizing: border-box;
   color: #fff;
@@ -114,7 +125,7 @@ const OpenStyle = styled.span`
   text-align: center;
   vertical-align: middle;
   &:hover {
-    background-color: #3ab5fc;
+    background-color: #ff8f66;
     -webkit-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;

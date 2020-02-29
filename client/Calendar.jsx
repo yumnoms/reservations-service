@@ -58,7 +58,7 @@ class Calendar extends React.Component {
     const { openDates, selectedDate } = this.props;
     const match = selectedDate.format('YYYY-MM-DD') === dateValue;
 
-    if (!openDates.includes(dateValue)) {
+    if (!openDates.includes(dateValue) || dateValue < moment().format('YYYY-MM-DD')) {
       monthArray.push(
         <NotSelectable key={dateValue}>
           {day}
@@ -66,18 +66,14 @@ class Calendar extends React.Component {
       );
     } else if (match) {
       monthArray.push(
-        <SelectedDay key={dateValue}>
-          <span onClick={() => { this.onDayClick(dateValue); }}>
-            {day}
-          </span>
+        <SelectedDay key={dateValue} onClick={() => { this.onDayClick(dateValue); }}>
+          {day}
         </SelectedDay>,
       );
     } else {
       monthArray.push(
-        <Selectable key={dateValue}>
-          <span onClick={() => { this.onDayClick(dateValue); }}>
-            {day}
-          </span>
+        <Selectable key={dateValue} onClick={() => { this.onDayClick(dateValue); }}>
+          {day}
         </Selectable>,
       );
     }
@@ -182,7 +178,7 @@ class Calendar extends React.Component {
 export default Calendar;
 
 const DaysStyle = styled.tr`
-  color: #d0021b;  
+  color: slateblue;
   font-size: 8pt;
   font-weight: 900;
   text-align: center;
@@ -207,7 +203,7 @@ const Selectable = styled.td`
 `;
 
 const SelectedDay = styled.td`
-  background-color: #d0021b;
+  background-color: slateblue;
   cursor: pointer;
   color: #fff;
 `;

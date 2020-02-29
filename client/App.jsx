@@ -8,6 +8,8 @@ import PeopleSelection from './PeopleSelection.jsx';
 import ResultsModal from './ResultsModal.jsx';
 
 
+// const ec2 = 'http://52.52.160.137';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,8 @@ class App extends React.Component {
   componentDidMount() {
     const restaurantId = window.location.pathname;
     $.ajax({
-      url: `http://localhost:3010/api${restaurantId}`,
+      // url: `${ec2}/api${restaurantId}`,
+      url: `/api${restaurantId}`,
       method: 'GET',
       success: (response) => {
         this.setState({
@@ -53,7 +56,8 @@ class App extends React.Component {
     const people = document.getElementById(`PeopleSelect${modal ? 'Modal' : ''}`).value;
 
     $.ajax({
-      url: `http://localhost:3010/api${restaurantId}search`,
+      // url: `${ec2}/api${restaurantId}search`,
+      url: `/api${restaurantId}search`,
       method: 'GET',
       data: {
         date,
@@ -126,7 +130,7 @@ const AppContainer = styled.div`
 `;
 
 const ButtonStyle = styled.button`
-  background: #d32323;
+  background: slateblue;
   border-radius: 5px;
   box-sizing: border-box;
   color: #fff;
@@ -140,7 +144,7 @@ const ButtonStyle = styled.button`
   vertical-align: middle;
 
   &:hover {
-    background-color: #e33b3b;
+    background-color: #8376d5;
     -webkit-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;

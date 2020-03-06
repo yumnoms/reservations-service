@@ -98,20 +98,32 @@ class App extends React.Component {
       : null;
 
     return (
-      <AppContainer>
-        <BottomPadding><h2>Make a Reservation</h2></BottomPadding>
-        <form>
-          <BottomPadding><DateSelection dates={restaurantInfo.dates} /></BottomPadding>
-          <BottomPadding>
-            <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} />
-            <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} />
-          </BottomPadding>
-          <div><ButtonStyle type="button" onClick={() => this.submitSearch(false)}>Find a Table</ButtonStyle></div>
-        </form>
+      <>
+        <TopSection>
+          <img src="logo.png" alt="YumNoms Logo" width="125px" height="125px" />
+          <RestaurantName>{restaurantInfo.name}</RestaurantName>
+        </TopSection>
+        <BottomSection>
+          <AppContainer>
+            <BottomPadding><h2>Make a Reservation</h2></BottomPadding>
+            <form>
+              <BottomPadding><DateSelection dates={restaurantInfo.dates} /></BottomPadding>
+              <BottomPadding>
+                <TimeSelection open={restaurantInfo.open} close={restaurantInfo.close} />
+                <PeopleSelection min={restaurantInfo.min} max={restaurantInfo.max} />
+              </BottomPadding>
+              <div><ButtonStyle type="button" onClick={() => this.submitSearch(false)}>Find a Table</ButtonStyle></div>
+            </form>
+          </AppContainer>
+          <Instsructions>
+            <p><i>** You are currently viewing restaurant {window.location.pathname.slice(1, -1)} of 10 **</i></p>
+            <p><i>** View others by changing the URL pathname in your address bar **</i></p>
+          </Instsructions>
+        </BottomSection>
         <div>
           {modalDisplay}
         </div>
-      </AppContainer>
+      </>
     );
   }
 }
@@ -126,6 +138,10 @@ const AppContainer = styled.div`
   cursor: default;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   padding: 0px 11px 11px 11px;
+  top: -97px;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
   width: 320px;
 `;
 
@@ -156,4 +172,27 @@ const BottomPadding = styled.div`
   padding-bottom: 6px;
   position: relative;
   width: 100%;
+`;
+
+const BottomSection = styled.div`
+  position: relative;
+`;
+
+const RestaurantName = styled.h1`
+  text-align: center;
+  margin-top: calc(50vh - 300px);
+  color: coral;
+  font-size: 2.5em;
+  font-family: Lato;
+`;
+
+const TopSection = styled.div`
+  background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/restaurant_icons.png");
+  height: 50vh;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+`;
+
+const Instsructions = styled.div`
+  text-align: center;
+  padding-top: 100px;
 `;

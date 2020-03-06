@@ -42,6 +42,14 @@ class ResultsList extends React.Component {
       }
     });
 
+    let popOrShift = true;
+    while (times.length > 6) {
+      if (popOrShift) times.pop();
+      else times.shift();
+
+      popOrShift = !popOrShift;
+    }
+
     const sortedResults = [];
     times.sort().forEach((time) => {
       sortedResults.push(resultsObjects[time]);
@@ -74,7 +82,7 @@ class ResultsList extends React.Component {
       <>
         {this.sortResults().map((timeGroup) => {
           const tableTime = moment(timeGroup[0].time, 'H:mm:ss').format('h:mm a');
-          if (timeGroup[0].isOpen && tableTime > moment().format('h:mm a')) {
+          if (timeGroup[0].isOpen && (timeGroup[0].date > moment().format('YYYY-MM-DD') || tableTime > moment().format('h:mm a'))) {
             return (
               <OpenStyle
                 key={timeGroup[0].id}

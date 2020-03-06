@@ -33,12 +33,6 @@ const Results = (props) => {
 
   return (
     <ModalOverlay>
-      <div>
-        <LogoStyle>
-          {/* <Icons.YelpIcon /> */}
-          <img src="logo.png" alt="YumNoms Logo" width="125px" height="125px" />
-        </LogoStyle>
-      </div>
       <ModalContainer>
         <CloseModal onClick={closeModal}><Icons.ClosingIcon /></CloseModal>
         <BottomPadding><h1>{restaurantInfo.name}</h1></BottomPadding>
@@ -93,6 +87,7 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, .7);
   text-align: center;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
   z-index: 50;
 `;
 
@@ -102,6 +97,8 @@ const ModalContainer = styled.div`
   margin: auto;
   padding: 40px 80px;
   position: relative;
+  transform: translateY(-50%);
+  top: 50%;
   text-align: center;
   width: 820px;
   z-index: 51;

@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 
 const database = process.env.TEST ? 'YumNomsReservations_TEST' : 'YumNomsReservations';
 const sequelize = new Sequelize(database, 'student', 'student', {
-  // host: 'database',
+  host: 'database',
   dialect: 'mysql',
   port: 3306,
 });
